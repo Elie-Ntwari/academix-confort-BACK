@@ -12,6 +12,8 @@ import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
+import core
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'iot_bienEtre_Back.settings')
 
