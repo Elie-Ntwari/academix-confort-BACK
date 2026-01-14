@@ -12,7 +12,7 @@ from .services import collect_measurement, get_comfort_statistics, get_comfort_e
 def collect_mesure(request):
     """
     Endpoint: POST /api/mesures/
-    Description: Collect a new environmental measurement, automatically calculate comfort index and generate alerts.
+    Description: Collect a new environmental e measurement, automatically calculate comfort index and generate alerts.
     """
     try:
         response_data = collect_measurement(request.data)
