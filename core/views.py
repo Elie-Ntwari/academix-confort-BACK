@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from .models import Salle, Mesure, IndiceConfort, Alerte
 from .serializers import SalleSerializer, MesureSerializer, IndiceConfortSerializer, AlerteSerializer
 from .services import collect_measurement, get_comfort_statistics, get_comfort_evolution
@@ -14,6 +16,16 @@ def collect_mesure(request):
     """
     try:
         response_data = collect_measurement(request.data)
+        # Send real-time update via WebSocket
+        channel_layer = get_channel_layer()
+        salle_id = response_data['mesure']['salle']
+        async_to_sync(channel_layer.group_send)(
+            f'salle_{salle_id}',
+            {
+                'type': 'confort_message',
+                'message': response_data
+            }
+        )
         return Response(response_data, status=status.HTTP_201_CREATED)
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

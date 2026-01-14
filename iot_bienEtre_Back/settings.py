@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'rest_framework',
     'corsheaders',
     'core',
@@ -88,6 +89,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'iot_bienEtre_Back.wsgi.application'
+
+ASGI_APPLICATION = 'iot_bienEtre_Back.asgi.application'
+
+
+
+
+
+
+# redis configuration for channels
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.getenv("REDIS_URL")],
+        },
+    },
+}
+
 
 
 # Database

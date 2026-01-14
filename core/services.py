@@ -21,7 +21,7 @@ def collect_measurement(data):
     Returns a dictionary with serialized mesure, indice_confort, and alertes.
     Raises ValidationError or ValueError on invalid data.
     """
-    salle_id = 1
+    salle_id = data.get('salle_id', 1)  # Default to 1 if not provided
     if not salle_id:
         raise ValueError('salle_id is required')
 
@@ -85,6 +85,7 @@ def collect_measurement(data):
                 created_alerts.append(alert_serializer.data)
 
     return {
+        
         'mesure': mesure_serializer.data,
         'indice_confort': indice_serializer.data,
         'alertes': created_alerts,
